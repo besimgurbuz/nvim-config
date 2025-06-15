@@ -26,9 +26,14 @@ return {
     "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      require("nvim-tree").setup({})
+      require("nvim-tree").setup({
+        view = {
+          side = "right"
+        },
+      })
       -- Keymaps for nvim-tree
       vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>")
+      vim.keymap.set("n", "<leader>E", ":NvimTreeFindFile<CR>", { desc = "Explorer: Find current file" })
     end,
   },
 }
