@@ -36,6 +36,7 @@ return {
         "ruff",
         "tailwindcss",
         "eslint",
+        "gopls"
       }
       
       -- This list ensures all our LSPs AND formatters are installed by Mason
@@ -46,6 +47,9 @@ return {
         "tailwindcss-language-server",
         "eslint-lsp",
         "prettierd", -- We add our formatters here
+        "gopls",
+        "goimports",
+        "golangci-lint"
       }
 
       require("mason").setup({
