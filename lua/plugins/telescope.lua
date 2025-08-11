@@ -26,6 +26,7 @@ return {
         }
       }
     })
+    telescope.load_extension("fzf")
 
     -- Keymaps for Telescope
     vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
