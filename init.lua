@@ -1,14 +1,6 @@
 -- ~/.config/nvim/init.lua
 
--- Set leader key to space
-vim.g.mapleader = " "
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.softtabstop = 2
-vim.opt.expandtab = true 
-
+require("core.options")
 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float)
