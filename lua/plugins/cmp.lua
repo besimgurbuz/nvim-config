@@ -92,6 +92,12 @@ return {
         }),
       },
     })
+    vim.api.nvim_create_autocmd('InsertEnter', {
+      group = vim.api.nvim_create_augroup('CmpOnEnter', { clear = true }),
+      callback = function()
+        require('cmp').complete()
+      end,
+    })
   end,
 }
 
