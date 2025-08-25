@@ -1,34 +1,78 @@
+-- ~/.config/nvim/lua/plugins/lsp.lua
 return {
+  {
+    -- LSP Configuration & Plugins
     "neovim/nvim-lspconfig",
-    -- Declare the dependencies this file needs
     dependencies = {
-        "williamboman/mason-lspconfig",
-        "williamboman/mason-lspconfig.nvim",
-        "hrsh7th/cmp-nvim-lsp",
+      { "hrsh7th/nvim-cmp" },
+      { "hrsh7th/cmp-nvim-lsp" },
+      { "williamboman/mason.nvim", config = true },
+      "williamboman/mason-lspconfig.nvim",
+      { "j-hui/fidget.nvim", opts = {} },
+      { "folke/neodev.nvim", opts = {} },
     },
     config = function()
-        local lspconfig = require("lspconfig")
-        local capabilities = require("cmp_nvim_lsp").default_capabilities()
-        local masonlspconfig = require("mason-lspconfig")
-
-        local on_attach = function(client, bufnr)
-            -- Your keymaps for LSP actions
-            local keymap = vim.keymap
-            keymap.set("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = "Hover" })
-            keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "Go to definition" })
-            keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "Go to declaration" })
-            keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "List References" })
-            keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename" })
-            keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "List Code Action" })
+      local on_attach = function(client, bufnr)
+        local nmap = function(keys, func, desc)
+          if desc then
+            desc = "LSP: " .. desc
+          end
+          vim.keymap.set("n", keys, func, { buffer = bufnr, noremap = true, silent = true, desc = desc })
         end
 
-        require("mason-lspconfig").setup({
-            function(server_name)
-                lspconfig[server_name].setup({
-                    on_attach = on_attach,
-                    capabilities = capabilities,
-                })
-            end,
+        nmap("gD", vim.lsp.buf.declaration, "Go to Declaration")
+        nmap("gd", vim.lsp.buf.definition, "Go to Definition")
+        nmap("K", vim.lsp.buf.hover, "Hover Documentation")
+        nmap("<leader>rn", vim.lsp.buf.rename, "Rename")
+        nmap("<leader>ca", vim.lsp.buf.code_action, "Code Action")
+        nmap("gr", vim.lsp.buf.references, "Go to References")
+      end
+
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+      local lspconfig_servers = {
+        "ts_ls",
+        "lua_ls",
+        "pyright",
+        "ruff",
+        "tailwindcss",
+        "eslint",
+        "gopls",
+        "cssls",
+        "jsonls",
+        "html",
+        "bashls"
+      }
+
+      -- This list ensures all our LSPs AND formatters are installed by Mason
+      local mason_packages = {
+        "typescript-language-server",
+        "lua-language-server",
+        "pyright",
+        "ruff",
+        "tailwindcss-language-server",
+        "eslint-lsp",
+        "prettierd",
+        "gopls",
+        "goimports",
+        "golangci-lint",
+        "css-lsp",
+        "json-lsp",
+        "html-lsp",
+        "basics-language-server"
+      }
+
+      require("mason").setup({
+        ensure_installed = mason_packages
+      })
+
+      local lspconfig = require("lspconfig")
+      for _, server_name in ipairs(lspconfig_servers) do
+        lspconfig[server_name].setup({
+          on_attach = on_attach,
+          capabilities = capabilities,
         })
+      end
     end,
+  },
 }
