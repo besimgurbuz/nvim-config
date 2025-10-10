@@ -26,6 +26,17 @@ return {
         nmap("<leader>rn", vim.lsp.buf.rename, "Rename")
         nmap("<leader>ca", vim.lsp.buf.code_action, "Code Action")
         nmap("gr", vim.lsp.buf.references, "Go to References")
+
+        nmap("<leader>dv", function()
+          vim.cmd.vsplit()
+          vim.lsp.buf.definition()
+        end, "Definition (Vertical Split)")
+
+        -- Open definition in a horizontal split
+        nmap("<leader>ds", function()
+          vim.cmd.split()
+          vim.lsp.buf.definition()
+        end, "Definition (Horizontal Split)")
       end
 
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
