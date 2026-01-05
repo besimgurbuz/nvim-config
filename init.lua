@@ -22,4 +22,3 @@ vim.opt.clipboard = 'unnamedplus'
 require("lazy").setup("plugins", {
   -- Your plugin configuration will go here
 })
-
