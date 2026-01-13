@@ -51,16 +51,22 @@ return {
       -- on_attach
       -- =========================
       local on_attach = function(client, bufnr)
-        local map = function(mode, lhs, rhs, desc)
-          vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+        local map = function(lhs, rhs, desc)
+          vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc })
         end
 
-        map("n", "K", vim.lsp.buf.hover, "LSP Hover")
-        map("n", "gd", vim.lsp.buf.definition, "Go to definition")
-        map("n", "gr", vim.lsp.buf.references, "References")
-        map("n", "gi", vim.lsp.buf.implementation, "Implementation")
-        map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
-        map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
+        map("K", vim.lsp.buf.hover, "LSP Hover")
+        map("gd", vim.lsp.buf.definition, "Go to definition")
+        map("gr", vim.lsp.buf.references, "References")
+        map("gi", vim.lsp.buf.implementation, "Implementation")
+        map("<leader>rn", vim.lsp.buf.rename, "Rename")
+        map("<leader>ca", vim.lsp.buf.code_action, "Code action")
+        map("<leader>dv", function()
+          vim.cmd("vsplit"); vim.lsp.buf.definition()
+        end, "Definition (Vertical)")
+        map("<leader>ds", function()
+          vim.cmd("split"); vim.lsp.buf.definition()
+        end, "Definition (Horizontal)")
 
         -- Disable formatting for some servers (recommended)
         if client.name == "ts_ls" or client.name == "eslint" then
